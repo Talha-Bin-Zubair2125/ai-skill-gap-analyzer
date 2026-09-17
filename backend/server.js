@@ -13,6 +13,8 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 
+const authRoutes = require("./routes/authroutes");
+
 // Load environment variables from .env file
 const PORT = process.env.PORT || 5000;
 const MONGO_URI =
@@ -26,7 +28,7 @@ console.log("MONGO_URI:", MONGO_URI);
 console.log("COOKIE_SECRET:", COOKIE_SECRET);
 
 // Routes
-
+app.use("/api/auth", authRoutes);
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

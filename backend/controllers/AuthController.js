@@ -1,5 +1,7 @@
 const bycrypt = require("bcrypt");
 const Student = require("../models/studentmodel");
+const Mentor = require("../models/mentormodel");
+const Admin = require("../models/adminmodel");
 
 // JOI validation schema
 const Joi = require("joi");
@@ -81,16 +83,119 @@ const loginStudent = async (req, res) => {
       return res.status(400).json({ message: "Invalid email or password" });
     }
     // Cookie handling and response
-    res.cookie("user", req.user._id, {
+    res.cookie("user", req.userId, {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     res.status(200).json({ message: "Login successful", user: student });
-    
+
   } catch (error) {
     console.error("Error during student login:", error);
     res.status(500).json({ message: "Server error" });
   }
+};
+
+// profile of a student
+const getStudentProfile = async (req, res) => {
+  try {
+    const student = await Student.findById(req.userId).select("-password");
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+    res.status(200).json({ message: "Student profile retrieved successfully", user: student });
+  } catch (error) {
+    console.error("Error during student profile retrieval:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Admin and Mentor Login functions can be implemented similarly, with their respective models and validation schemas.
+const loginAdmin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const admin = await Admin.findOne({ email });
+    if (!admin) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+    const isPasswordValid = await bycrypt.compare(password, admin.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+    res.cookie("user", req.userId, {
+      httpOnly: true,
+      secure: true,
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    res.status(200).json({ message: "Login successful", user: admin });
+  } catch (error) {
+    console.error("Error during admin login:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
+const loginMentor = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const mentor = await Mentor.findOne({ email });
+    if (!mentor) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+    const isPasswordValid = await bycrypt.compare(password, mentor.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+    res.cookie("user", req.userId, {
+      httpOnly: true,
+      secure: true,
+        sameSite: "lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    res.status(200).json({ message: "Login successful", user: mentor });
+  }
+    catch (error) {
+    console.error("Error during mentor login:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Profile retrieval functions for Admin and Mentor can also be implemented similarly, using their respective models.
+const getAdminProfile = async (req, res) => {
+    try {
+        const admin = await Admin.findById(req.userId).select("-password");
+        if (!admin) {
+            return res.status(404).json({ message: "Admin not found" });
+        }
+        res.status(200).json({ message: "Admin profile retrieved successfully", user: admin });
+    }
+    catch (error) {
+        console.error("Error during admin profile retrieval:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+const getMentorProfile = async (req, res) => {
+    try {
+        const mentor = await Mentor.findById(req.userId).select("-password");
+        if (!mentor) {
+            return res.status(404).json({ message: "Mentor not found" });
+        }
+        res.status(200).json({ message: "Mentor profile retrieved successfully", user: mentor });
+    }
+    catch (error) {
+        console.error("Error during mentor profile retrieval:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+module.exports = {
+    registerStudent,
+    loginStudent,
+    getStudentProfile,
+    loginAdmin,
+    loginMentor,
+    getAdminProfile,
+    getMentorProfile
 };
