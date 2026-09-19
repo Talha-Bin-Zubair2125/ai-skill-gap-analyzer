@@ -6,6 +6,7 @@ const {
   loginAdmin,
   loginMentor,
   getprofile,
+  logout,
 } = require("../controllers/AuthController");
 const { protect } = require("../middlewares/AuthMiddleware");
 const { authorize } = require("../middlewares/AuthorizeMiddleware");
@@ -18,13 +19,14 @@ router.post("/login", loginAdmin);
 router.post("/login", loginMentor);
 
 router.get(
-  "/profile/student",
+  "/profile",
   protect,
   authorize("student", "admin", "mentor"),
   getprofile,
 );
 
-router.get("/profile/admin", protect, authorize("admin"), getprofile);
-router.get("/profile/mentor", protect, authorize("mentor"), getprofile);
+router.get("/profile", protect, authorize("admin"), getprofile);
+router.get("/profile", protect, authorize("mentor"), getprofile);
+router.post("/logout", protect, logout);
 
 module.exports = router;
