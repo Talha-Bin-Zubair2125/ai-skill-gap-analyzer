@@ -14,7 +14,8 @@ const AuthProvider = ({ children }) => {
     const fetchUser = async () => {
       try {
         const response = await axios.get("", { withCredentials: true });
-        setUser(response.data);
+        console.log("Fetched user data:", response.data.user);
+        setUser(response.data.user);
         setSuccess(response.data.message || "User data fetched successfully");
       } catch (error) {
         setError(error.message || "Failed to fetch user data");
