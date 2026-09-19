@@ -82,8 +82,9 @@ const loginStudent = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
+    
     // Cookie handling and response
-    res.cookie("user", req.userId, {
+    res.cookie("user", req.user._id, {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
@@ -100,7 +101,7 @@ const loginStudent = async (req, res) => {
 // profile of a student
 const getStudentProfile = async (req, res) => {
   try {
-    const student = await Student.findById(req.userId).select("-password");
+    const student = await Student.findById(req.user._id).select("-password");
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
@@ -123,7 +124,7 @@ const loginAdmin = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
-    res.cookie("user", req.userId, {
+    res.cookie("user", req.user._id, {
       httpOnly: true,
       secure: true,
         sameSite: "lax",
@@ -147,7 +148,8 @@ const loginMentor = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
-    res.cookie("user", req.userId, {
+    
+    res.cookie("user", req.user._id, {
       httpOnly: true,
       secure: true,
         sameSite: "lax",
@@ -164,7 +166,7 @@ const loginMentor = async (req, res) => {
 // Profile retrieval functions for Admin and Mentor can also be implemented similarly, using their respective models.
 const getAdminProfile = async (req, res) => {
     try {
-        const admin = await Admin.findById(req.userId).select("-password");
+        const admin = await Admin.findById(req.user._id).select("-password");
         if (!admin) {
             return res.status(404).json({ message: "Admin not found" });
         }
@@ -178,7 +180,7 @@ const getAdminProfile = async (req, res) => {
 
 const getMentorProfile = async (req, res) => {
     try {
-        const mentor = await Mentor.findById(req.userId).select("-password");
+        const mentor = await Mentor.findById(req.user._id).select("-password");
         if (!mentor) {
             return res.status(404).json({ message: "Mentor not found" });
         }
@@ -190,6 +192,27 @@ const getMentorProfile = async (req, res) => {
     }
 };
 
+const getprofile = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const role = req.user.role;
+
+    let user;
+    if (role === "student") {
+      return getStudentProfile(req, res);
+    } else if (role === "admin") {
+      return getAdminProfile(req, res);
+    }
+    else if (role === "mentor") {
+      return getMentorProfile(req, res);
+    }
+    return res.status(400).json({ message: "Invalid role" });
+  } catch (error) {
+    console.error("Error during profile retrieval:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
     registerStudent,
     loginStudent,
@@ -197,5 +220,6 @@ module.exports = {
     loginAdmin,
     loginMentor,
     getAdminProfile,
-    getMentorProfile
+    getMentorProfile,
+    getprofile,
 };

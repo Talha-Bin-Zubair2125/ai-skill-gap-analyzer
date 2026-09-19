@@ -13,9 +13,12 @@ const { protect } = require("../middlewares/AuthMiddleware");
 const { authorize } = require("../middlewares/AuthorizeMiddleware");
 
 router.post("/register", registerStudent);
-router.post("/login/student", loginStudent);
-router.post("/login/admin", loginAdmin);
-router.post("/login/mentor", loginMentor);
+
+// Same route for login but different controllers for each role
+router.post("/login", loginStudent);
+router.post("/login", loginAdmin);
+router.post("/login", loginMentor);
+
 router.get(
   "/profile/student",
   protect,

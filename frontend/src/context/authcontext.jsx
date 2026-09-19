@@ -13,7 +13,8 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get("", { withCredentials: true });
+        // fetch student, admin and mentor profile data from the backend
+        
         console.log("Fetched user data:", response.data.user);
         setProfile(response.data.user);
         setSuccess(response.data.message || "User data fetched successfully");
