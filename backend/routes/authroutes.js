@@ -3,11 +3,9 @@ const router = express.Router();
 const {
   registerStudent,
   loginStudent,
-  getStudentProfile,
   loginAdmin,
   loginMentor,
-  getAdminProfile,
-  getMentorProfile,
+  getprofile,
 } = require("../controllers/AuthController");
 const { protect } = require("../middlewares/AuthMiddleware");
 const { authorize } = require("../middlewares/AuthorizeMiddleware");
@@ -23,9 +21,10 @@ router.get(
   "/profile/student",
   protect,
   authorize("student", "admin", "mentor"),
-  getStudentProfile,
+  getprofile,
 );
-router.get("/profile/admin", protect, authorize("admin"), getAdminProfile);
-router.get("/profile/mentor", protect, authorize("mentor"), getMentorProfile);
+
+router.get("/profile/admin", protect, authorize("admin"), getprofile);
+router.get("/profile/mentor", protect, authorize("mentor"), getprofile);
 
 module.exports = router;
