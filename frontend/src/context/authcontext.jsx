@@ -4,7 +4,7 @@ import axios from "axios";
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -15,7 +15,7 @@ const AuthProvider = ({ children }) => {
       try {
         const response = await axios.get("", { withCredentials: true });
         console.log("Fetched user data:", response.data.user);
-        setUser(response.data.user);
+        setProfile(response.data.user);
         setSuccess(response.data.message || "User data fetched successfully");
       } catch (error) {
         setError(error.message || "Failed to fetch user data");
@@ -28,7 +28,9 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, success }}>
+    <AuthContext.Provider
+      value={{ profile, setProfile, loading, error, setError, success, setSuccess }}
+    >
       {children}
     </AuthContext.Provider>
   );

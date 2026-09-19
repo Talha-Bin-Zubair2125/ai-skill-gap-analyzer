@@ -5,6 +5,7 @@ import axios from "axios";
 
 export default function LoginComponent() {
   // States
+  const [user,setUser] = useState(null); // for storing user data
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
