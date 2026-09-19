@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginComponent from "./components/LoginComponent";
 import RegisterComponent from "./components/RegisterComponent";
-import adminprofile from "./pages/admin_dashboard/admin_profile";
-import studentprofile from "./pages/student_dashboard/student_profile";
-import mentorprofile from "./pages/mentor_dashboard/mentor_profile";
+import Admin_profile from "./pages/admin_dashboard/admin_profile";
+import Student_profile from "./pages/student_dashboard/student_profile";
+import Mentor_profile from "./pages/mentor_dashboard/mentor_profile";
 
 import "./App.css";
 
@@ -14,9 +14,9 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginComponent />} />
           <Route path="/register" element={<RegisterComponent />} />
-          <Route path="/admin-dashboard" element={<adminprofile />} />
-          <Route path="/student-dashboard" element={<studentprofile />} />
-          <Route path="/mentor-dashboard" element={<mentorprofile />} />
+          <Route path="/admin-dashboard" element={<Admin_profile />} />
+          <Route path="/student-dashboard" element={<Student_profile />} />
+          <Route path="/mentor-dashboard" element={<Mentor_profile />} />
         </Routes>
       </Router>
     </>

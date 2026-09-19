@@ -1,7 +1,22 @@
-import React from 'react'
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../../context/authcontext";
 
-export default function mentor_profile() {
+export default function Mentor_profile() {
+  const { profile } = useContext(AuthContext);
   return (
-    <div>mentor_profile</div>
-  )
+    <>
+      <h1>Mentor Profile</h1>
+      {profile ? (
+        <div>
+          <p>First Name: {profile.Firstname}</p>
+          <p>Middle Name: {profile.Middlename}</p>
+          <p>Last Name: {profile.Lastname}</p>
+          <p>Email: {profile.email}</p>
+          <p>Role: {profile.role}</p>
+        </div>
+      ) : (
+        <p>Loading profile...</p>
+      )}
+    </>
+  );
 }

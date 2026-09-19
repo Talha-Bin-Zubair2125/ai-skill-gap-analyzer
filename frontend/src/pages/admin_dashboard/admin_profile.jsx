@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/authcontext";
 
-export default function admin_profile() {
+export default function Admin_profile() {
   const { profile } = useContext(AuthContext);
 
   return (
