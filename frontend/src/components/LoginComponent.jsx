@@ -23,8 +23,8 @@ export default function LoginComponent() {
       setEmail("");
       setPassword("");
       setError(null);
+      setUser(response.data.user); // Store user data in state
       setSuccess(response.data.message || "Login successful");
-
       if (
         response.data.message === "Login successful" &&
         response.data.user.role === "student"
