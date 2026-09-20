@@ -24,7 +24,7 @@ export default function RegisterComponent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("", data, { withCredentials: true });
+      const response = await axios.post("http://localhost:3000/api/auth/register", data, { withCredentials: true });
       setFirstname("");
       setMiddlename("");
       setLastname("");

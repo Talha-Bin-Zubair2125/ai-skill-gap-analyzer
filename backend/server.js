@@ -3,10 +3,11 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const app = express();
+const connectDB = require("./db");
 
 app.use(
   cors({
-    origin: "http://localhost:5000",
+    origin: "http://localhost:5173",
     credentials: true,
   }),
 );
@@ -26,6 +27,8 @@ console.log("Loaded Environment Variables:");
 console.log("PORT:", PORT);
 console.log("MONGO_URI:", MONGO_URI);
 console.log("COOKIE_SECRET:", COOKIE_SECRET);
+
+connectDB();
 
 // Routes
 app.use("/api/auth", authRoutes);

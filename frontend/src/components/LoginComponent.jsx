@@ -16,7 +16,7 @@ export default function LoginComponent() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "http://localhost:3000/api/auth/login",
         { email, password },
         { withCredentials: true },
       );
@@ -44,6 +44,7 @@ export default function LoginComponent() {
         navigate("/");
       }
     } catch (error) {
+      console.error("Error during login:", error);
       setError(error.response?.data?.message || "Login failed");
       setSuccess(null);
     }
@@ -68,7 +69,11 @@ export default function LoginComponent() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <button type="submit">
+        Login
+      </button>
       </form>
+      
       <p>
         Don't have an account? <Link to="/register">Register</Link>
       </p>

@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginComponent from "./components/LoginComponent";
 import RegisterComponent from "./components/RegisterComponent";
-import Admin_profile from "./pages/admin_dashboard/admin_profile";
-import Student_profile from "./pages/student_dashboard/student_profile";
-import Mentor_profile from "./pages/mentor_dashboard/mentor_profile";
+import Admin_profile from "./pages/admin_dashboard/Admin_profile";
+import Student_profile from "./pages/student_dashboard/Student_profile";
+import Mentor_profile from "./pages/mentor_dashboard/Mentor_profile";
 
 import "./App.css";
 

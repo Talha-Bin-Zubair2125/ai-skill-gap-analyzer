@@ -15,13 +15,14 @@ const AuthProvider = ({ children }) => {
       try {
         // fetch student, admin and mentor profile data from the backend
         const response = await axios.get(
-          "http://localhost:5000/api/auth/profile",
+          "http://localhost:3000/api/auth/profile",
           { withCredentials: true },
         );
         console.log("Fetched user data:", response.data.user);
         setProfile(response.data.user);
         setSuccess(response.data.message || "User data fetched successfully");
       } catch (error) {
+        console.log(error)
         setError(error.message || "Failed to fetch user data");
       } finally {
         setLoading(false);
