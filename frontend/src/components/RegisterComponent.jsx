@@ -39,7 +39,7 @@ export default function RegisterComponent() {
       setSuccess(response.data.message || "Registration successful");
 
       if (response.data.message === "Registration successful") {
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       setError(error.response?.data?.message || "Registration failed");
@@ -89,6 +89,7 @@ export default function RegisterComponent() {
           autoComplete="new-password"
           onChange={(e) => setPassword(e.target.value)}
         />
+        <button type="submit">Register</button>
       </form>
       <p>
         Already have an account? <Link to="/">Login</Link>

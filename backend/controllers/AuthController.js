@@ -216,27 +216,6 @@ const getMentorProfile = async (req, res) => {
   }
 };
 
-// Profile retrieval function that determines the role of the user and fetches the appropriate profile
-const getprofile = async (req, res) => {
-  try {
-    // based on role of the user, call the appropriate profile retrieval function
-    const role = req.user.role;
-    console.log("User role:", role); // Debugging: Log the user role
-
-    if (role === "student") {
-      return getStudentProfile(req, res);
-    } else if (role === "admin") {
-      return getAdminProfile(req, res);
-    } else if (role === "mentor") {
-      return getMentorProfile(req, res);
-    }
-    
-    return res.status(400).json({ message: "Invalid role" });
-  } catch (error) {
-    console.error("Error during profile retrieval:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
 
 // Logout function to clear the cookie
 const logout = (req, res) => {
@@ -256,6 +235,5 @@ module.exports = {
   loginMentor,
   getAdminProfile,
   getMentorProfile,
-  getprofile,
   logout,
 };

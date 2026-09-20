@@ -1,13 +1,49 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/authcontext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Mentor_profile() {
-  const { profile } = useContext(AuthContext);
+  const { profile, setProfile } = useContext(AuthContext);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/auth/mentor/profile",
+          {
+            withCredentials: true,
+          },
+        );
+        setProfile(response.data.user);
+        setLoading(false);
+        setSuccess(response.data.message || "Profile fetched successfully");
+        setError(null);
+      } catch (error) {
+        console.error("Error fetching mentor profile:", error);
+        setLoading(false);
+        setError("Error fetching mentor profile");
+        setSuccess(null);
+      }
+    };
+
+    fetchProfile();
+  }, [setProfile]);
+
   return (
     <>
+      {loading ? (
+        <p>Loading profile...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : success ? (
+        <p>{success}</p>
+      ) : null}
       <h1>Mentor Profile</h1>
       {profile ? (
         <div>

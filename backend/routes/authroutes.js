@@ -5,7 +5,9 @@ const {
   loginStudent,
   loginAdmin,
   loginMentor,
-  getprofile,
+  getStudentProfile,
+  getAdminProfile,
+  getMentorProfile,
   logout,
 } = require("../controllers/AuthController");
 const  protect  = require("../middlewares/AuthMiddleware");
@@ -19,10 +21,9 @@ router.post("/login/student", loginStudent);
 router.post("/login/mentor", loginMentor);
 
 // Profile routes for each role
-router.get("/profile", protect, authorize("mentor"), getprofile);
-router.get("/profile", protect, authorize("admin"), getprofile);
-
-router.get("/profile", protect, authorize("student"), getprofile);
+router.get("/admin/profile", protect, authorize("admin"), getAdminProfile);
+router.get("/student/profile", protect, authorize("student"), getStudentProfile);
+router.get("/mentor/profile", protect, authorize("mentor"), getMentorProfile);
 
 
 router.post("/logout", logout);
