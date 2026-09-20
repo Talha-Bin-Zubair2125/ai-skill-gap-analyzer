@@ -5,6 +5,7 @@ import axios from "axios";
 
 export default function Admin_profile() {
   const { profile } = useContext(AuthContext);
+  console.log("Admin profile data:", profile); // Debugging: Log the profile data
   const navigate = useNavigate();
 
   return (
@@ -24,7 +25,7 @@ export default function Admin_profile() {
       <button onClick={() => {
         const logout = async () => {
             try {
-                const response = await axios.post("http://localhost:5000/api/auth/logout", {}, { withCredentials: true });
+                const response = await axios.post("http://localhost:3000/api/auth/logout", {}, { withCredentials: true });
                 console.log(response.data.message); // Logout successful
                 navigate("/"); // Redirect to login page
             } catch (error) {

@@ -18,15 +18,11 @@ router.post("/login/admin", loginAdmin);
 router.post("/login/student", loginStudent);
 router.post("/login/mentor", loginMentor);
 
-router.get(
-  "/profile",
-  protect,
-  authorize("student", "admin", "mentor"),
-  getprofile,
-);
-
+// Profile routes for each role
 router.get("/profile", protect, authorize("admin"), getprofile);
+router.get("/profile", protect, authorize("student"), getprofile);
 router.get("/profile", protect, authorize("mentor"), getprofile);
-router.post("/logout", protect, logout);
+
+router.post("/logout", logout);
 
 module.exports = router;

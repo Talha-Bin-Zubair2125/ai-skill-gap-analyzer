@@ -104,7 +104,7 @@ const loginStudent = async (req, res) => {
 // profile of a student
 const getStudentProfile = async (req, res) => {
   try {
-    const student = await Student.findById(req.user._id).select("-password");
+    const student = await Student.findById(req.user.id).select("-password");
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
@@ -188,7 +188,7 @@ const loginMentor = async (req, res) => {
 // Profile retrieval functions for Admin and Mentor can also be implemented similarly, using their respective models.
 const getAdminProfile = async (req, res) => {
   try {
-    const admin = await Admin.findById(req.user._id).select("-password");
+    const admin = await Admin.findById(req.user.id).select("-password");
     if (!admin) {
       return res.status(404).json({ message: "Admin not found" });
     }
@@ -203,7 +203,7 @@ const getAdminProfile = async (req, res) => {
 
 const getMentorProfile = async (req, res) => {
   try {
-    const mentor = await Mentor.findById(req.user._id).select("-password");
+    const mentor = await Mentor.findById(req.user.id).select("-password");
     if (!mentor) {
       return res.status(404).json({ message: "Mentor not found" });
     }
