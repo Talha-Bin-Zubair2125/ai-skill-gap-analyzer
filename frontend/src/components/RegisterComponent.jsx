@@ -24,7 +24,11 @@ export default function RegisterComponent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/api/auth/register", data, { withCredentials: true });
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/register",
+        data,
+        { withCredentials: true },
+      );
       setFirstname("");
       setMiddlename("");
       setLastname("");
@@ -74,6 +78,7 @@ export default function RegisterComponent() {
           type="email"
           placeholder="Enter Email"
           value={email}
+          autoComplete="new-email"
           onChange={(e) => setEmail(e.target.value)}
         />
         <label htmlFor="password">Password:</label>
@@ -81,6 +86,7 @@ export default function RegisterComponent() {
           type="password"
           placeholder="Enter Password"
           value={password}
+          autoComplete="new-password"
           onChange={(e) => setPassword(e.target.value)}
         />
       </form>

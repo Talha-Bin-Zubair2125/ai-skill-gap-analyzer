@@ -3,20 +3,21 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function LoginComponent() {
+export default function Student_LoginComponent() {
   // States
-  const [user,setUser] = useState(null); // for storing user data
+  const [user, setUser] = useState(null); // for storing user data
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
 
+  // Login function of student
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
+        "http://localhost:3000/api/auth/login/student",
         { email, password },
         { withCredentials: true },
       );
@@ -25,21 +26,8 @@ export default function LoginComponent() {
       setError(null);
       setUser(response.data.user); // Store user data in state
       setSuccess(response.data.message || "Login successful");
-      if (
-        response.data.message === "Login successful" &&
-        response.data.user.role === "student"
-      ) {
+      if (response.data.user.role === "student") {
         navigate("/student-dashboard");
-      } else if (
-        response.data.message === "Login successful" &&
-        response.data.user.role === "admin"
-      ) {
-        navigate("/admin-dashboard");
-      } else if (
-        response.data.message === "Login successful" &&
-        response.data.user.role === "mentor"
-      ) {
-        navigate("/mentor-dashboard");
       } else {
         navigate("/");
       }
@@ -60,6 +48,7 @@ export default function LoginComponent() {
           type="email"
           placeholder="Enter Email"
           value={email}
+          autoComplete="new-email"
           onChange={(e) => setEmail(e.target.value)}
         />
         <label htmlFor="password">Password:</label>
@@ -67,13 +56,12 @@ export default function LoginComponent() {
           type="password"
           placeholder="Enter Password"
           value={password}
+          autoComplete="new-password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">
-        Login
-      </button>
+        <button type="submit">Login</button>
       </form>
-      
+
       <p>
         Don't have an account? <Link to="/register">Register</Link>
       </p>

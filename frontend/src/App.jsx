@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginComponent from "./components/LoginComponent";
+import Student_LoginComponent from "./components/Student_LoginComponent";
 import RegisterComponent from "./components/RegisterComponent";
 import Admin_profile from "./pages/admin_dashboard/Admin_profile";
 import Student_profile from "./pages/student_dashboard/Student_profile";
@@ -12,7 +12,7 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<LoginComponent />} />
+          <Route path="/" element={<Student_LoginComponent />} />
           <Route path="/register" element={<RegisterComponent />} />
           <Route path="/admin-dashboard" element={<Admin_profile />} />
           <Route path="/student-dashboard" element={<Student_profile />} />
