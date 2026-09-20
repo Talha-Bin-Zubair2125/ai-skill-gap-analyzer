@@ -17,7 +17,7 @@ export default function Mentor_LoginComponent() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/mentor/login",
+        "http://localhost:3000/api/auth/login/mentor",
         { email, password },
         { withCredentials: true },
       );

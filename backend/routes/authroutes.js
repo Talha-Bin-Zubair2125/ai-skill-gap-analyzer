@@ -19,9 +19,11 @@ router.post("/login/student", loginStudent);
 router.post("/login/mentor", loginMentor);
 
 // Profile routes for each role
-router.get("/profile", protect, authorize("admin"), getprofile);
-router.get("/profile", protect, authorize("student"), getprofile);
 router.get("/profile", protect, authorize("mentor"), getprofile);
+router.get("/profile", protect, authorize("admin"), getprofile);
+
+router.get("/profile", protect, authorize("student"), getprofile);
+
 
 router.post("/logout", logout);
 
