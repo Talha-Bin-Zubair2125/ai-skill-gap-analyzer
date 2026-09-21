@@ -10,6 +10,7 @@ export default function Admin_ProfileUpdateComponent() {
   const [profileData, setProfileData] = useState({
     name: "",
     email: "",
+    password: "",
     role: "",
   });
   const [successMessage, setSuccessMessage] = useState("");
@@ -71,34 +72,53 @@ export default function Admin_ProfileUpdateComponent() {
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
       <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          id="name"
-          value={profileData.name}
-          onChange={(e) =>
-            setProfileData({ ...profileData, name: e.target.value })
-          }
-        />
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          value={profileData.email}
-          onChange={(e) =>
-            setProfileData({ ...profileData, email: e.target.value })
-          }
-        />
-        <label htmlFor="role">Role:</label>
-        <input
-          type="text"
-          id="role"
-          value={profileData.role}
-          onChange={(e) =>
-            setProfileData({ ...profileData, role: e.target.value })
-          }
-          disabled
-        />
+        <label htmlFor="name">
+          Name:
+          <input
+            type="text"
+            id="name"
+            value={profileData.name}
+            onChange={(e) =>
+              setProfileData({ ...profileData, name: e.target.value })
+            }
+          />
+        </label>
+        <label htmlFor="email">
+          Email:
+          <input
+            type="email"
+            id="email"
+            value={profileData.email}
+            autoComplete="new-email"
+            onChange={(e) =>
+              setProfileData({ ...profileData, email: e.target.value })
+            }
+          />
+        </label>
+        <label htmlFor="password">
+          Password:
+          <input
+            type="password"
+            id="password"
+            value={profileData.password}
+            autoComplete="new-password"
+            onChange={(e) =>
+              setProfileData({ ...profileData, password: e.target.value })
+            }
+          />
+        </label>
+        <label htmlFor="role">
+          Role:
+          <input
+            type="text"
+            id="role"
+            value={profileData.role}
+            onChange={(e) =>
+              setProfileData({ ...profileData, role: e.target.value })
+            }
+            disabled
+          />
+        </label>
         <button type="submit">Update Profile</button>
         <button type="button" onClick={() => navigate("/admin-dashboard")}>
           Back
