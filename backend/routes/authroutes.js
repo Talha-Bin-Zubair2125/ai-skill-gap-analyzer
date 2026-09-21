@@ -9,6 +9,12 @@ const {
   getAdminProfile,
   getMentorProfile,
   logout,
+  updateStudentProfile,
+  getStudentProfileById,
+  updateAdminProfile,
+  getAdminProfileById,
+  updateMentorProfile,
+  getMentorProfileById,
 } = require("../controllers/AuthController");
 const  protect  = require("../middlewares/AuthMiddleware");
 const { authorize } = require("../middlewares/AuthorizeMiddleware");
@@ -25,6 +31,15 @@ router.get("/admin/profile", protect, authorize("admin"), getAdminProfile);
 router.get("/student/profile", protect, authorize("student"), getStudentProfile);
 router.get("/mentor/profile", protect, authorize("mentor"), getMentorProfile);
 
+// Profile routes for each role by ID
+router.get("/admin/profile/:id", protect, authorize("admin"), getAdminProfileById);
+router.get("/student/profile/:id", protect, authorize("student"), getStudentProfileById);
+router.get("/mentor/profile/:id", protect, authorize("mentor"), getMentorProfileById);
+
+// Update profile routes for each role
+router.put("/admin/profile-update/:id", protect, authorize("admin"), updateAdminProfile);
+router.put("/student/profile-update/:id", protect, authorize("student"), updateStudentProfile);
+router.put("/mentor/profile-update/:id", protect, authorize("mentor"), updateMentorProfile);
 
 router.post("/logout", logout);
 

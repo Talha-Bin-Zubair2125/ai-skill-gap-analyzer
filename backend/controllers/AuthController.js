@@ -28,8 +28,26 @@ const studentUpdateSchema = Joi.object({
   Middlename: Joi.string().allow("").optional(),
   Lastname: Joi.string().required(),
   email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
+  password: Joi.string().min(6).optional(),
   role: Joi.string().valid("student").required(),
+});
+
+// JOI validation schema for admin profile update
+const adminUpdateSchema = Joi.object({
+  name: Joi.string().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).optional(),
+  role: Joi.string().valid("admin").required(),
+});
+
+// JOI validation schema for mentor profile update
+const mentorUpdateSchema = Joi.object({
+  Firstname: Joi.string().required(),
+  Middlename: Joi.string().allow("").optional(),
+  Lastname: Joi.string().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).optional(),
+  role: Joi.string().valid("mentor").required(),
 });
 
 // Register a new student
@@ -118,6 +136,54 @@ const getStudentProfile = async (req, res) => {
   }
 };
 
+// Student profile update function
+const updateStudentProfile = async (req, res) => {
+  const { error } = studentUpdateSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+  const { Firstname, Middlename, Lastname, email, password, role } = req.body;
+  try {
+    const student = await Student.findById(req.params.id);
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+    const hashedPassword = await bcryptjs.hash(password, 10);
+    student.Firstname = Firstname;
+    student.Middlename = Middlename;
+    student.Lastname = Lastname;
+    student.email = email;
+    student.password = hashedPassword;
+    student.role = role;
+    await student.save();
+    res.status(200).json({
+      message: "Student profile updated successfully",
+      user: student,
+    });
+  }
+  catch (error) {
+    console.error("Error during student profile update:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Fetch the profile of a student by ID
+const getStudentProfileById = async (req, res) => {
+  try {
+    const student = await Student.findById(req.params.id).select("-password");
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+    res.status(200).json({
+      message: "Student profile retrieved successfully",
+      user: student,
+    });
+  } catch (error) {
+    console.error("Error during student profile retrieval by ID:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 // Admin and Mentor Login functions can be implemented similarly, with their respective models and validation schemas.
 const loginAdmin = async (req, res) => {
   try {
@@ -201,6 +267,51 @@ const getAdminProfile = async (req, res) => {
   }
 };
 
+// Admin profile update function
+const updateAdminProfile = async (req, res) => {
+  const { error } = adminUpdateSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+  const { name, email, password, role } = req.body;
+  try {
+    const admin = await Admin.findById(req.params.id);
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+    const hashedPassword = await bcryptjs.hash(password, 10);
+    admin.name = name;
+    admin.email = email;
+    admin.password = hashedPassword;
+    admin.role = role;
+    await admin.save();
+    res.status(200).json({
+      message: "Admin profile updated successfully",
+      user: admin,
+    });
+  }
+  catch (error) {
+    console.error("Error during admin profile update:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// get admin profile by id
+const getAdminProfileById = async (req, res) => {
+  try {
+    const admin = await Admin.findById(req.params.id).select("-password");
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+    res
+      .status(200)
+      .json({ message: "Admin profile retrieved successfully", user: admin });
+  } catch (error) {
+    console.error("Error during admin profile retrieval by ID:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 const getMentorProfile = async (req, res) => {
   try {
     const mentor = await Mentor.findById(req.user.id).select("-password");
@@ -216,6 +327,52 @@ const getMentorProfile = async (req, res) => {
   }
 };
 
+// Mentor profile update function
+const updateMentorProfile = async (req, res) => {
+  const { error } = mentorUpdateSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+  const { Firstname, Middlename, Lastname, email, password, role } = req.body;
+  try {
+    const mentor = await Mentor.findById(req.params.id);
+    if (!mentor) {
+      return res.status(404).json({ message: "Mentor not found" });
+    }
+    const hashedPassword = await bcryptjs.hash(password, 10);
+    mentor.Firstname = Firstname;
+    mentor.Middlename = Middlename;
+    mentor.Lastname = Lastname;
+    mentor.email = email;
+    mentor.password = hashedPassword;
+    mentor.role = role;
+    await mentor.save();
+    res.status(200).json({
+      message: "Mentor profile updated successfully",
+      user: mentor,
+    });
+  }
+  catch (error) {
+    console.error("Error during mentor profile update:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// get mentor profile by id
+const getMentorProfileById = async (req, res) => {
+  try {
+    const mentor = await Mentor.findById(req.params.id).select("-password");
+    if (!mentor) {
+      return res.status(404).json({ message: "Mentor not found" });
+    }
+    res
+      .status(200)
+      .json({ message: "Mentor profile retrieved successfully", user: mentor });
+  } catch (error) {
+    console.error("Error during mentor profile retrieval by ID:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 // Logout function to clear the cookie
 const logout = (req, res) => {
@@ -236,4 +393,10 @@ module.exports = {
   getAdminProfile,
   getMentorProfile,
   logout,
+  updateStudentProfile,
+  getStudentProfileById,
+  updateAdminProfile,
+  getAdminProfileById,
+  updateMentorProfile,
+  getMentorProfileById,
 };
