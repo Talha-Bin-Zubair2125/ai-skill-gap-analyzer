@@ -5,6 +5,7 @@ import axios from "axios";
 
 export default function Admin_profile() {
   const { profile, setProfile } = useContext(AuthContext);
+  const [id, setId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -21,9 +22,11 @@ export default function Admin_profile() {
           },
         );
         setProfile(response.data.user);
+        setId(response.data.user._id);
         setLoading(false);
         setSuccess(response.data.message || "Profile fetched successfully");
         setError(null);
+        console.log("Admin ID:", response.data.user._id);
       } catch (error) {
         console.error("Error fetching admin profile:", error);
         setLoading(false);
@@ -74,6 +77,9 @@ export default function Admin_profile() {
         }}
       >
         Logout
+      </button>
+      <button onClick={() => navigate(`/admin/profile/update/${id}`)}>
+        Update Profile
       </button>
     </>
   );

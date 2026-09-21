@@ -5,6 +5,7 @@ import axios from "axios";
 
 export default function Student_profile() {
   const { profile, setProfile } = useContext(AuthContext);
+  const [id, setId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -19,9 +20,11 @@ export default function Student_profile() {
           },
         );
         setProfile(response.data.user);
+        setId(response.data.user._id);
         setLoading(false);
         setSuccess(response.data.message || "Profile fetched successfully");
         setError(null);
+        console.log("Student ID:", response.data.user._id);
       } catch (error) {
         console.error("Error fetching student profile:", error);
         setLoading(false);
@@ -74,6 +77,9 @@ export default function Student_profile() {
         }}
       >
         Logout
+      </button>
+      <button onClick={() => navigate(`/student/profile/update/${id}`)}>
+        Update Profile
       </button>
     </>
   );
