@@ -33,7 +33,13 @@ export default function Admin_ProfileUpdateComponent() {
         );
         setErrorMessage(null);
         console.log("Fetched admin profile data:", response.data.user);
-        setProfileData(response.data.user);
+        const user = response.data.user;
+        setProfileData({
+          name: user.name || "",
+          email: user.email || "",
+          password: "", // Do not pre-fill the password field for security reasons
+          role: user.role || "",
+        });
       } catch (error) {
         setErrorMessage("Error fetching admin profile data");
         setSuccessMessage(null);
@@ -47,6 +53,7 @@ export default function Admin_ProfileUpdateComponent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log("Submitting updated profile data:", profileData);
       const response = await axios.put(
         `http://localhost:3000/api/auth/admin/profile-update/${id}`,
         profileData,
@@ -60,7 +67,7 @@ export default function Admin_ProfileUpdateComponent() {
       setErrorMessage(null);
       console.log("Updated admin profile data:", response.data.user);
     } catch (error) {
-      setErrorMessage("Error updating admin profile data");
+      setErrorMessage( error.message ||"Error updating admin profile data");
       setSuccessMessage(null);
       console.error("Error updating admin profile data:", error);
     }

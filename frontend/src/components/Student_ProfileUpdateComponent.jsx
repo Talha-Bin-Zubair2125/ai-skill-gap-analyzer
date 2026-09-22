@@ -25,7 +25,15 @@ export default function Student_ProfileUpdateComponent() {
             withCredentials: true,
           },
         );
-        setProfileData(response.data.user);
+        const user = response.data.user;
+        setProfileData({
+          Firstname: user.Firstname || "",
+          Middlename: user.Middlename || "",
+          Lastname: user.Lastname || "",
+          email: user.email || "",
+          password: "", // Do not pre-fill the password field for security reasons
+          role: user.role || "",
+        });
         setSuccessMessage(
           response.data.message || "Profile fetched successfully",
         );

@@ -276,6 +276,7 @@ const updateAdminProfile = async (req, res) => {
   const { name, email, password, role } = req.body;
   try {
     const admin = await Admin.findById(req.params.id);
+    console.log("Admin found for update:", admin); // Debugging: Log the found admin
     if (!admin) {
       return res.status(404).json({ message: "Admin not found" });
     }
