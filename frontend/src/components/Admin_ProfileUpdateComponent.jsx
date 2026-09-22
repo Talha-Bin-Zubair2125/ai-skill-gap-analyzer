@@ -100,7 +100,6 @@ export default function Admin_ProfileUpdateComponent() {
           <input
             type="password"
             id="password"
-            value={profileData.password}
             autoComplete="new-password"
             onChange={(e) =>
               setProfileData({ ...profileData, password: e.target.value })

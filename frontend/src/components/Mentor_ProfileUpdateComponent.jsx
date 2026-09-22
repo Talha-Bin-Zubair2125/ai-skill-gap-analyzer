@@ -122,7 +122,6 @@ export default function Mentor_ProfileUpdateComponent() {
           <input
             type="password"
             name="password"
-            value={profileData.password}
             autoComplete="new-password"
             onChange={(e) =>
               setProfileData({ ...profileData, password: e.target.value })
