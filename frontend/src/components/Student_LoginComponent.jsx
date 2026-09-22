@@ -65,6 +65,10 @@ export default function Student_LoginComponent() {
       <p>
         Don't have an account? <Link to="/register">Register</Link>
       </p>
+      <p>
+        Forgot your password?{" "}
+        <Link to="/forget-password-student">Reset Password</Link>
+      </p>
     </>
   );
 }
