@@ -251,6 +251,31 @@ const forgetPasswordStudent = async (req, res) => {
   }
 };
 
+// Student reset password function
+const resetPasswordStudent = async (req, res) => {
+  const { token, password } = req.body;
+  try {
+    const student = await Student.findOne({
+      resetPasswordToken:
+  token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+    if (!student) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+    const hashedPassword = await bcryptjs.hash(password, 10);
+    student.password = hashedPassword;
+    student.resetPasswordToken = null;
+    student.resetPasswordExpires = null;
+    await student.save();
+    res.status(200).json({ message: "Password reset successful" });
+  }
+  catch (error) {
+    console.error("Error during student reset password:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 // Admin and Mentor Login functions can be implemented similarly, with their respective models and validation schemas.
 const loginAdmin = async (req, res) => {
   try {
@@ -465,4 +490,6 @@ module.exports = {
   getAdminProfileById,
   updateMentorProfile,
   getMentorProfileById,
+  forgetPasswordStudent,
+  resetPasswordStudent,
 };

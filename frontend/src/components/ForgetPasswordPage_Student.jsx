@@ -11,7 +11,7 @@ export default function ForgetPasswordPage_Student() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/students/forget-password",
+        "http://localhost:3000/api/auth/student/forget-password",
         { email },
       );
       setSuccessMessage(response.data.message);
