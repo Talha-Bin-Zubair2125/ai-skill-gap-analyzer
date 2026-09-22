@@ -39,7 +39,7 @@ function App() {
             path="/forget-password-student"
             element={<ForgetPasswordPage_Student />}
           />
-          <Route path="/reset-password-student" element={<ResetPasswordPage_Student />} />
+          <Route path="/reset-password-student/:token" element={<ResetPasswordPage_Student />} />
           <Route path="/admin-dashboard" element={<Admin_profile />} />
           <Route path="/student-dashboard" element={<Student_profile />} />
           <Route path="/mentor-dashboard" element={<Mentor_profile />} />

@@ -1,4 +1,7 @@
 const bcryptjs = require("bcryptjs");
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
+require("dotenv").config();
 const Student = require("../models/studentmodel");
 const Mentor = require("../models/mentormodel");
 const Admin = require("../models/adminmodel");
@@ -160,8 +163,7 @@ const updateStudentProfile = async (req, res) => {
       message: "Student profile updated successfully",
       user: student,
     });
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Error during student profile update:", error);
     res.status(500).json({ message: "Server error" });
   }
@@ -180,6 +182,71 @@ const getStudentProfileById = async (req, res) => {
     });
   } catch (error) {
     console.error("Error during student profile retrieval by ID:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Student forget password function
+const forgetPasswordStudent = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const student = await Student.findOne({ email });
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+    // Generate a reset token -- generate a random token using crypto and convert it to a hexadecimal string
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    // Set the reset token and expiration time in the student document
+    student.resetPasswordToken = resetToken;
+    student.resetPasswordExpires = Date.now() + 3600000;
+    await student.save();
+
+    // Debugging: Log the reset token and expiration time
+    console.log("Reset token generated:", resetToken);
+    console.log("Reset token expiration time:", student.resetPasswordExpires);
+    console.log("Student email:", student.email);
+    console.log("EMAIL_USER:", process.env.EMAIL_USER);
+    console.log("EMAIL_PASS:", process.env.EMAIL_PASS);
+
+    // Send the reset token to the student's email -- nodemailer connects to Gmail's SMTP server and sends an email with the reset token
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const resetUrl = `http://localhost:5173/reset-password-student/${resetToken}`;
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: student.email,
+      subject: "Password Reset - AI Skill Gap Analyzer",
+      text: `You requested a password reset.
+
+      Click the following link to reset your password:
+      ${resetUrl}
+
+      This link will expire in 1 hour.
+
+      If you did not request a password reset, you can safely ignore this email.
+
+      Regards,
+      AI Skill Gap Analyzer Team
+
+      For any queries, contact us at:
+      support@aiskillgap.com
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({
+      message: "Password reset token sent to email",
+    });
+
+  } catch (error) {
+    console.error("Error during student forget password:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -290,8 +357,7 @@ const updateAdminProfile = async (req, res) => {
       message: "Admin profile updated successfully",
       user: admin,
     });
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Error during admin profile update:", error);
     res.status(500).json({ message: "Server error" });
   }
@@ -352,8 +418,7 @@ const updateMentorProfile = async (req, res) => {
       message: "Mentor profile updated successfully",
       user: mentor,
     });
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Error during mentor profile update:", error);
     res.status(500).json({ message: "Server error" });
   }
