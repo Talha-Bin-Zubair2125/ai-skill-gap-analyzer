@@ -244,7 +244,6 @@ const forgetPasswordStudent = async (req, res) => {
     res.status(200).json({
       message: "Password reset token sent to email",
     });
-
   } catch (error) {
     console.error("Error during student forget password:", error);
     res.status(500).json({ message: "Server error" });
@@ -256,8 +255,7 @@ const resetPasswordStudent = async (req, res) => {
   const { token, password } = req.body;
   try {
     const student = await Student.findOne({
-      resetPasswordToken:
-  token,
+      resetPasswordToken: token,
       resetPasswordExpires: { $gt: Date.now() },
     });
     if (!student) {
@@ -269,8 +267,7 @@ const resetPasswordStudent = async (req, res) => {
     student.resetPasswordExpires = null;
     await student.save();
     res.status(200).json({ message: "Password reset successful" });
-  }
-  catch (error) {
+  } catch (error) {
     console.error("Error during student reset password:", error);
     res.status(500).json({ message: "Server error" });
   }
@@ -465,6 +462,80 @@ const getMentorProfileById = async (req, res) => {
   }
 };
 
+// Mentor forget password function
+const forgetPasswordMentor = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const mentor = await Mentor.findOne({ email });
+    if (!mentor) {
+      return res.status(404).json({ message: "Mentor not found" });
+    }
+    // Generate a reset token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    // Set the reset token and expiration time in the mentor document
+    mentor.resetPasswordToken = resetToken;
+    mentor.resetPasswordExpires = Date.now() + 3600000;
+    await mentor.save();
+
+    // Send the reset token to the mentor's email
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+    const resetUrl = `http://localhost:5173/reset-password-mentor/${resetToken}`;
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: mentor.email,
+      subject: "Password Reset - AI Skill Gap Analyzer",
+      text: `You requested a password reset.
+      Click the following link to reset your password:
+      ${resetUrl}
+      This link will expire in 1 hour.
+      If you did not request a password reset, you can safely ignore this email.
+      Regards,
+      AI Skill Gap Analyzer Team
+      For any queries, contact us at:
+      support@ai-skill-gap-analyzer.com
+      `,
+    };
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({
+      message: "Password reset token sent to email",
+    });
+  } catch (error) {
+    console.error("Error during mentor forget password:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// Mentor reset password function
+const resetPasswordMentor = async (req, res) => {
+  const { token, password } = req.body;
+  try {
+    const mentor = await Mentor.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+    if (!mentor) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+    const hashedPassword = await bcryptjs.hash(password, 10);
+    mentor.password = hashedPassword;
+    mentor.resetPasswordToken = null;
+    mentor.resetPasswordExpires = null;
+    await mentor.save();
+    res.status(200).json({ message: "Password reset successful" });
+  }
+  catch (error) {
+    console.error("Error during mentor reset password:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 // Logout function to clear the cookie
 const logout = (req, res) => {
   res.clearCookie("user", {
@@ -492,4 +563,6 @@ module.exports = {
   getMentorProfileById,
   forgetPasswordStudent,
   resetPasswordStudent,
+  forgetPasswordMentor,
+  resetPasswordMentor,
 };

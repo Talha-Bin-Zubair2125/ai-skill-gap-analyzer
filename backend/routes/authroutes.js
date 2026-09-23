@@ -17,6 +17,8 @@ const {
   getMentorProfileById,
   forgetPasswordStudent,
   resetPasswordStudent,
+  forgetPasswordMentor,
+  resetPasswordMentor,
 } = require("../controllers/AuthController");
 const  protect  = require("../middlewares/AuthMiddleware");
 const { authorize } = require("../middlewares/AuthorizeMiddleware");
@@ -46,6 +48,11 @@ router.put("/mentor/profile-update/:id", protect, authorize("mentor"), updateMen
 // Password reset routes for students
 router.post("/student/forget-password", forgetPasswordStudent);
 router.post("/student/reset-password", resetPasswordStudent);
+
+// Password reset routes for mentors
+router.post("/mentor/forget-password", forgetPasswordMentor);
+router.post("/mentor/reset-password", resetPasswordMentor);
+
 
 router.post("/logout", logout);
 
