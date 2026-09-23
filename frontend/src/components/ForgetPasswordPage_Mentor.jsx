@@ -44,7 +44,7 @@ export default function ForgetPasswordPage_Mentor() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <button type="submit">Reset Password</button>
+        <button type="submit">Send Reset Link</button>
       </form>
     </>
   );

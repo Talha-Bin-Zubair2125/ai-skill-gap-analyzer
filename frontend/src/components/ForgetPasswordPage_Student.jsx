@@ -38,7 +38,7 @@ export default function ForgetPasswordPage_Student() {
             required
           />
         </label>
-        <button type="submit">Reset Password</button>
+        <button type="submit">Send Reset Link</button>
       </form>
     </>
   );
