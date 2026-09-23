@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 export default function Mentor_LoginComponent() {
@@ -28,7 +28,7 @@ export default function Mentor_LoginComponent() {
       if (response.data.user.role === "mentor") {
         navigate("/mentor-dashboard");
       } else {
-        navigate("/");
+        navigate("/mentor-login");
       }
       setEmail("");
       setPassword("");
@@ -61,6 +61,7 @@ export default function Mentor_LoginComponent() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Login</button>
+        <p><Link to="/mentor-forget-password">Forgot Password?</Link></p>
       </form>
     </>
   );

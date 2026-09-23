@@ -69,7 +69,7 @@ export default function Admin_profile() {
                 { withCredentials: true },
               );
               console.log(response.data.message); // Logout successful
-              navigate("/"); // Redirect to login page
+              navigate("/admin-login"); // Redirect to login page
             } catch (error) {
               console.error("Error during logout:", error);
             }

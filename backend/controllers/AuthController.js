@@ -252,7 +252,8 @@ const forgetPasswordStudent = async (req, res) => {
 
 // Student reset password function
 const resetPasswordStudent = async (req, res) => {
-  const { token, password } = req.body;
+  const { token } = req.params;
+  const { password } = req.body;
   try {
     const student = await Student.findOne({
       resetPasswordToken: token,
@@ -514,7 +515,8 @@ const forgetPasswordMentor = async (req, res) => {
 
 // Mentor reset password function
 const resetPasswordMentor = async (req, res) => {
-  const { token, password } = req.body;
+  const { token } = req.params;
+  const { password } = req.body;
   try {
     const mentor = await Mentor.findOne({
       resetPasswordToken: token,

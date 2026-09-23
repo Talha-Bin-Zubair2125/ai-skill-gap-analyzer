@@ -14,8 +14,7 @@ export default function ResetPasswordPage_Student() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.post("http://localhost:3000/api/auth/student/reset-password", {
-          token,
+        const response = await axios.post(`http://localhost:3000/api/auth/student/reset-password/${token}`, {
           password,
         });
         if (response.data.success) {

@@ -47,11 +47,11 @@ router.put("/mentor/profile-update/:id", protect, authorize("mentor"), updateMen
 
 // Password reset routes for students
 router.post("/student/forget-password", forgetPasswordStudent);
-router.post("/student/reset-password", resetPasswordStudent);
+router.post("/student/reset-password/:token", resetPasswordStudent);
 
 // Password reset routes for mentors
 router.post("/mentor/forget-password", forgetPasswordMentor);
-router.post("/mentor/reset-password", resetPasswordMentor);
+router.post("/mentor/reset-password/:token", resetPasswordMentor);
 
 
 router.post("/logout", logout);

@@ -8,6 +8,8 @@ import Student_ProfileUpdateComponent from "./components/Student_ProfileUpdateCo
 import Mentor_ProfileUpdateComponent from "./components/Mentor_ProfileUpdateComponent";
 import ForgetPasswordPage_Student from "./components/ForgetPasswordPage_Student";
 import ResetPasswordPage_Student from "./components/ResetPasswordPage_Student";
+import ForgetPasswordPage_Mentor from "./components/ForgetPasswordPage_Mentor";
+import ResetPasswordPage_Mentor from "./components/ResetPasswordPage_Mentor";
 import Admin_profile from "./pages/admin_dashboard/Admin_profile";
 import Student_profile from "./pages/student_dashboard/Student_profile";
 import Mentor_profile from "./pages/mentor_dashboard/Mentor_profile";
@@ -39,7 +41,12 @@ function App() {
             path="/forget-password-student"
             element={<ForgetPasswordPage_Student />}
           />
+          <Route
+            path="/forget-password-mentor"
+            element={<ForgetPasswordPage_Mentor />}
+          />
           <Route path="/reset-password-student/:token" element={<ResetPasswordPage_Student />} />
+          <Route path="/reset-password-mentor/:token" element={<ResetPasswordPage_Mentor />} />
           <Route path="/admin-dashboard" element={<Admin_profile />} />
           <Route path="/student-dashboard" element={<Student_profile />} />
           <Route path="/mentor-dashboard" element={<Mentor_profile />} />
